@@ -1,0 +1,17 @@
+<%= form_with(model: rover, local: true) do |form| %>
+  <% if rover.errors.any? %>
+    <div id="error_explanation">
+      <h2><%= pluralize(rover.errors.count, "error") %> prohibited this rover from being saved:</h2>
+
+      <ul>
+      <% rover.errors.full_messages.each do |message| %>
+        <li><%= message %></li>
+      <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <div class="actions">
+    <%= form.submit %>
+  </div>
+<% end %>
