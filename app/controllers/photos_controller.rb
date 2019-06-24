@@ -1,48 +1,30 @@
 require 'uri'
 require 'net/http'
 require 'json'
+require 'pry'
 
-class PhotosController < ApplicationController
-  # before_action :set_photo, only: [:show, :edit, :update, :destroy]
-  key = '&api_key=U1kRZbEkK32GwgT1XTtpi8OIibCsZv3jDLX3GQXj'
-  url = 'https://api.nasa.gov/mars-photos/api/v1/rovers/curiosity/photos?'
 
-  # GET /photos
-  # GET /photos.json
-  # def index
-  #   @photos = Photo.all
-  # end
-
-  # GET /photos/1
-  # GET /photos/1.json
-  # def show
-  # end
-
-  # GET /photos/new
-  # def new
-  #   @photo = Photo.new
-  # end
-
-  # GET /photos/1/edit
-  # def edit
-  # end
+class PhotosController < ApplicationController  
 
   # POST /photos
   # POST /photos.json
   def create
-    if(:camera != 'all'){
-      request_uri = url + 'sol=' + :sol +'&camera='+ :camera + key
-    }
-    else{
-      request_uri = url + 'sol=' + :sol + key
-    }
+    key = '&api_key=U1kRZbEkK32GwgT1XTtpi8OIibCsZv3jDLX3GQXj'
+    url = 'https://api.nasa.gov/mars-photos/api/v1/rovers/curiosity/photos?'
+    if params[:camera] != 'all'
+      request_uri = url + 'sol=' + params[:sol].to_s + '&camera=' + params[:camera] + key
+    else
+      request_uri = url + 'sol=' + params[:sol].to_s + key
+    end
     
     uri = URI(request_uri)
     response = Net::HTTP.get(uri)
     @result = JSON.parse(response)
     
-    render @result
+    render json: @result
   end
+
+end
 
 #   private
 #     # Use callbacks to share common setup or constraints between actions.
